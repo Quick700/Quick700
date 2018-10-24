@@ -40,7 +40,7 @@ cd "$NGHTTP2_PATH"
 autoreconf -i
 automake
 autoconf
-CFLAGS="$CFLAGS_SAN" CXXFLAGS="$CFLAGS_SAN" ./configure --disable-shared --enable-static
+CFLAGS="$CFLAGS_SAN -fPIC" CXXFLAGS="$CFLAGS_SAN -fPIC" ./configure --disable-shared --enable-static
 make clean
 make -j$(nproc)
 cd -
@@ -49,8 +49,7 @@ echo "Install PATH: $INSTALL_PREFIX"
 ./buildconf --with-apr="$APR_PATH" --with-apr-util="$APR_UTIL_PATH"
 
 echo "Compiling HTTPD"
-CFLAGS="-I$NGHTTP2_PATH/lib/includes $CFLAGS_SAN -ggdb -O3" LDFLAGS="-L$NGHTTP2_PATH/lib -lpthread" \
-echo "$PWD"
+CFLAGS="-I$NGHTTP2_PATH/lib/includes $CFLAGS_SAN -ggdb -O3" LDFLAGS="-L$NGHTTP2_PATH/lib -lpthread -fsanitize=address" \
 ./configure \
 		--prefix="$INSTALL_PREFIX" \
 		--with-nghttp2="$NGHTTP2_PATH/" \
