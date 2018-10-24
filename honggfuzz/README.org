@@ -24,6 +24,7 @@
      ./buildconf
 
      # I installed apache in ~/fuzzpache
+     mkdir -p ~/fuzzpache
      ./configure --prefix=$HOME/fuzzpache
      make
      make install
@@ -48,6 +49,12 @@
     #+BEGIN_EXAMPLE
       $ honggfuzz/honggfuzz -f corpus_http1 -w ./httpd.wordlist -- ./apache2/bin/httpd -DFOREGROUND -f  /home/$USER/fuzz/apache/apache2/conf/httpd.conf.h1
     #+END_EXAMPLE
+
+    I'm actually using...
+
+    #+BEGIN_SRC sh
+      honggfuzz -f hong-apache/corpus_http1 -w hong-apache/httpd.wordlist --persistent -- $HOME/fuzzpache/bin/httpd -DFOREGROUND -f $HOME/fuzzpache/conf/httpd.conf.h1
+    #+END_SRC
 
     *HTTP/2:*
 
