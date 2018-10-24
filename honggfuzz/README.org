@@ -23,11 +23,9 @@
      # Generate the configure script
      ./buildconf
 
-     # I installed apache in ~/fuzzpache
-     mkdir -p ~/fuzzpache
-     ./configure --prefix=$HOME/fuzzpache --enable-module=cache --enable-module=cache_socache --enable-module=dav_fs --enable-mods-static=all
-     make
-     make install
+     # Install using the modified honggfuzz configure script...
+     # Make sure /usr/bin/env python launches python 2, otherwise this will fail.
+     ./../compile_and_install_asan.sh
    #+END_SRC
 
    Now we just need to configure Apache's httpd for Honggfuzz... Unfortunately we have to edit some files.
