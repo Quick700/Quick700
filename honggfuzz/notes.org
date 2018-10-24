@@ -1,8 +1,21 @@
 * Honggfuzz
 
+** Git submodule
+
+   This directory contains a git submodule, it should be set to fetch
+   version 2.4.37 of apache.
+
+   #+BEGIN_SRC sh
+     git pull
+     git submodule update --init
+   #+END_SRC
+
+   Should get you set up.
+
 ** Testing Apache
 
    [[https://github.com/google/honggfuzz/tree/master/examples/apache-httpd][Instructions for fuzzing apache 2.4 with Hongfuzz are here]]
+
 
 *** Things to be aware of
 
