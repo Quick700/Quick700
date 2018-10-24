@@ -10,3 +10,6 @@
 [submodule "honggfuzz/honggfuzz"]
 	path = honggfuzz/honggfuzz
 	url = https://github.com/google/honggfuzz
+[submodule "honggfuzz/nghttp2"]
+	path = honggfuzz/nghttp2
+	url = https://github.com/nghttp2/nghttp2/
