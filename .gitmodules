@@ -1,3 +1,9 @@
 [submodule "honggfuzz/apache"]
 	path = honggfuzz/apache
 	url = https://github.com/apache/httpd
+[submodule "honggfuzz/apr"]
+	path = honggfuzz/apr
+	url = https://github.com/apache/apr
+[submodule "honggfuzz/apr-util"]
+	path = honggfuzz/apr-util
+	url = https://github.com/apache/apr-util

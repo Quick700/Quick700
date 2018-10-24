@@ -2,8 +2,9 @@
 
 ** Git submodule
 
-   This directory contains a git submodule, it should be set to fetch
-   version 2.4.37 of apache.
+   This directory contains a few git submodules for Apache, it should
+   be set to fetch version 2.4.37 of Apache's httpd, as well as the
+   latest versions of ~apr~ and ~apr-util~.
 
    #+BEGIN_SRC sh
      git pull
@@ -12,6 +13,22 @@
 
    Should get you set up.
 
+   #+BEGIN_SRC sh
+     # Go into the apache directory
+     cd apache
+
+     # Apply the honggfuzz patch
+     patch -p1 < ../httpd-master.honggfuzz.patch
+
+     # Generate the configure script
+     ./buildconf
+
+     # I installed apache in ~/fuzzpache
+     ./configure --prefix=$HOME/fuzzpache
+     make
+     make install
+   #+END_SRC
+
 ** Testing Apache
 
    [[https://github.com/google/honggfuzz/tree/master/examples/apache-httpd][Instructions for fuzzing apache 2.4 with Hongfuzz are here]]
@@ -19,14 +36,7 @@
 
 *** Things to be aware of
 
-    Looks like we need to patch Apache's httpd using
-
-    #+BEGIN_EXAMPLE
-      $ cd httpd-master
-      $ patch -p1 < httpd-master.honggfuzz.patch
-    #+END_EXAMPLE
-
-    And then compile and install again.
+    *You need to patch Apache's httpd as above*
 
 *** TODO Fuzzing commands
 
