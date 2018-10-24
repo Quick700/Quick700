@@ -1,0 +1,33 @@
+* Honggfuzz
+
+** Testing Apache
+
+   [[https://github.com/google/honggfuzz/tree/master/examples/apache-httpd][Instructions for fuzzing apache 2.4 with Hongfuzz are here]]
+
+*** Things to be aware of
+
+    Looks like we need to patch Apache's httpd using
+
+    #+BEGIN_EXAMPLE
+      $ cd httpd-master
+      $ patch -p1 < httpd-master.honggfuzz.patch
+    #+END_EXAMPLE
+
+    And then compile and install again.
+
+*** TODO Fuzzing commands
+
+    Should we fuzz both HTTP/1 and HTTP/2, or just one of those? I
+    believe the DeepWeb server is starting with HTTP/2?
+
+    *HTTP/1:*
+
+    #+BEGIN_EXAMPLE
+      $ honggfuzz/honggfuzz -f corpus_http1 -w ./httpd.wordlist -- ./apache2/bin/httpd -DFOREGROUND -f  /home/$USER/fuzz/apache/apache2/conf/httpd.conf.h1
+    #+END_EXAMPLE
+
+    *HTTP/2:*
+
+    #+BEGIN_EXAMPLE
+      $ honggfuzz/honggfuzz -f corpus_http2 -w ./httpd.wordlist -- ./apache2/bin/httpd -DFOREGROUND -f /home/$USER/fuzz/apache/apache2/conf/httpd.conf.h2
+    #+END_EXAMPLE
