@@ -25,7 +25,7 @@
 
      # I installed apache in ~/fuzzpache
      mkdir -p ~/fuzzpache
-     ./configure --prefix=$HOME/fuzzpache
+     ./configure --prefix=$HOME/fuzzpache --enable-module=cache --enable-module=cache_socache --enable-module=dav_fs --enable-mods-static=all
      make
      make install
    #+END_SRC
@@ -69,3 +69,19 @@
     #+BEGIN_EXAMPLE
       $ honggfuzz/honggfuzz -f corpus_http2 -w ./httpd.wordlist -- ./apache2/bin/httpd -DFOREGROUND -f /home/$USER/fuzz/apache/apache2/conf/httpd.conf.h2
     #+END_EXAMPLE
+
+** Current Problems
+
+   We seem to need to enable some more modules in Apache, which I have
+   added to the ~./configure~ options above, but I still can't get it
+   to run with the config files...
+
+   Seems to need to run under root. I'm getting these issues, though:
+
+   #+BEGIN_EXAMPLE
+     $ sudo $HOME/fuzzpache/bin/httpd -DFOREGROUND -f $HOME/fuzzpache/conf/httpd.conf.h1
+
+     [Wed Oct 24 11:31:54.451236 2018] [core:emerg] [pid 8080:tid 139831017579136] (22)Invalid argument: AH00024: Couldn't set permissions on the proxy mutex; check User and Group directives
+     [Wed Oct 24 11:31:54.451279 2018] [proxy:crit] [pid 8080:tid 139831017579136] (22)Invalid argument: AH02478: failed to create proxy mutex
+     AH00016: Configuration Failed
+   #+END_EXAMPLE
