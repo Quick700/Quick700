@@ -1,0 +1,3 @@
+[submodule "honggfuzz/apache"]
+	path = honggfuzz/apache
+	url = https://github.com/apache/httpd
