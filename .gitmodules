@@ -7,3 +7,6 @@
 [submodule "honggfuzz/apr-util"]
 	path = honggfuzz/apr-util
 	url = https://github.com/apache/apr-util
+[submodule "honggfuzz/honggfuzz"]
+	path = honggfuzz/honggfuzz
+	url = https://github.com/google/honggfuzz

@@ -18,7 +18,7 @@
      cd apache
 
      # Apply the honggfuzz patch
-     patch -p1 < ../httpd-master.honggfuzz.patch
+     patch -p1 < ../hong-apache/httpd-master.honggfuzz.patch
 
      # Generate the configure script
      ./buildconf
