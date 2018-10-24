@@ -64,16 +64,33 @@
 
 ** Current Problems
 
-   We seem to need to enable some more modules in Apache, which I have
-   added to the ~./configure~ options above, but I still can't get it
-   to run with the config files...
-
-   Seems to need to run under root. I'm getting these issues, though:
+   I think it might almost be working, but I get this when running Honggfuzz:
 
    #+BEGIN_EXAMPLE
-     $ sudo $HOME/fuzzpache/bin/httpd -DFOREGROUND -f $HOME/fuzzpache/conf/httpd.conf.h1
-
-     [Wed Oct 24 11:31:54.451236 2018] [core:emerg] [pid 8080:tid 139831017579136] (22)Invalid argument: AH00024: Couldn't set permissions on the proxy mutex; check User and Group directives
-     [Wed Oct 24 11:31:54.451279 2018] [proxy:crit] [pid 8080:tid 139831017579136] (22)Invalid argument: AH02478: failed to create proxy mutex
-     AH00016: Configuration Failed
+     [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5152 exited with status: EXITED, exit code: 1
+     Persistent mode: Launched new persistent PID: 5156
+     [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5155 exited with status: EXITED, exit code: 1
+     Persistent mode: Launched new persistent PID: 5159
+     [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5156 exited with status: EXITED, exit code: 1
+     Persistent mode: Launched new persistent PID: 5160
+     [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5159 exited with status: EXITED, exit code: 1
+     Persistent mode: Launched new persistent PID: 5163
+     [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5160 exited with status: EXITED, exit code: 1
+     Persistent mode: Launched new persistent PID: 5164
+     [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5163 exited with status: EXITED, exit code: 1
+     Persistent mode: Launched new persistent PID: 5167
    #+END_EXAMPLE
+
+   When trying to start the server on its own I get:
+
+   #+BEGIN_EXAMPLE
+     $ ./dist/bin/httpd -DFOREGROUND -f httpd.conf.h1
+
+     Honggfuzz Net Driver (pid=5381): TCP port:8080 will be used
+     [2018-10-24T13:03:16-0400][W][5381] netDriver_sockConn():173 Honggfuzz Net Driver (pid=5381): couldn't connect(loopback, port:8080)
+     Honggfuzz Net Driver (pid=5381): Waiting for the TCP server process to start accepting TCP connections at 127.0.0.1:8080. Sleeping for 1 second....
+     httpd: Could not open configuration file /home/calvin/git/Quick700/honggfuzz/dist/httpd.conf.h1: No such file or directory
+   #+END_EXAMPLE
+
+   Not sure if running Honggfuzz as above will make it connect and not
+   immediately die like this. Maybe that connection is messed up.
