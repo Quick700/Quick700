@@ -13,3 +13,6 @@
 [submodule "honggfuzz/nghttp2"]
 	path = honggfuzz/nghttp2
 	url = https://github.com/nghttp2/nghttp2/
+[submodule "fuzzchick/QuickChick"]
+	path = fuzzchick/QuickChick
+	url = https://github.com/QuickChick/QuickChick.git
