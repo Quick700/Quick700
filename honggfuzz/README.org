@@ -53,44 +53,38 @@
     *HTTP/1:*
 
     #+BEGIN_SRC sh
-      honggfuzz -f hong-apache/corpus_http1 -w hong-apache/httpd.wordlist -- ./dist/bin/httpd -DFOREGROUND -f httpd.conf.h1
+      honggfuzz -f hong-apache/corpus_http1 -w hong-apache/httpd.wordlist -- ./dist/bin/httpd -DFOREGROUND -f $PWD/httpd.conf.h1
     #+END_SRC
 
     *HTTP/2:*
 
     #+BEGIN_SRC sh
-      honggfuzz -f hong-apache/corpus_http2 -w hong-apache/httpd.wordlist -- ./dist/bin/httpd -DFOREGROUND -f httpd.conf.h2
+      honggfuzz -f hong-apache/corpus_http2 -w hong-apache/httpd.wordlist -- ./dist/bin/httpd -DFOREGROUND -f $PWD/httpd.conf.h2
     #+END_SRC
 
-** Current Problems
+** Known Problems
 
-   I think it might almost be working, but I get this when running Honggfuzz:
+*** Not running httpd with a full path to the config file
+    
+    I got this issue when running Honggfuzz at first.
 
-   #+BEGIN_EXAMPLE
-     [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5152 exited with status: EXITED, exit code: 1
-     Persistent mode: Launched new persistent PID: 5156
-     [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5155 exited with status: EXITED, exit code: 1
-     Persistent mode: Launched new persistent PID: 5159
-     [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5156 exited with status: EXITED, exit code: 1
-     Persistent mode: Launched new persistent PID: 5160
-     [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5159 exited with status: EXITED, exit code: 1
-     Persistent mode: Launched new persistent PID: 5163
-     [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5160 exited with status: EXITED, exit code: 1
-     Persistent mode: Launched new persistent PID: 5164
-     [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5163 exited with status: EXITED, exit code: 1
-     Persistent mode: Launched new persistent PID: 5167
-   #+END_EXAMPLE
+    #+BEGIN_EXAMPLE
+      [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5152 exited with status: EXITED, exit code: 1
+      Persistent mode: Launched new persistent PID: 5156
+      [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5155 exited with status: EXITED, exit code: 1
+      Persistent mode: Launched new persistent PID: 5159
+      [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5156 exited with status: EXITED, exit code: 1
+      Persistent mode: Launched new persistent PID: 5160
+      [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5159 exited with status: EXITED, exit code: 1
+      Persistent mode: Launched new persistent PID: 5163
+      [2018-10-24T13:03:03-0400][W][5150] arch_checkWait():309 Persistent mode: PID 5160 exited with status: EXITED, exit code: 1
+      Persistent mode: Launched new persistent PID: 5164
+      [2018-10-24T13:03:03-0400][W][5149] arch_checkWait():309 Persistent mode: PID 5163 exited with status: EXITED, exit code: 1
+      Persistent mode: Launched new persistent PID: 5167
+    #+END_EXAMPLE
 
-   When trying to start the server on its own I get:
+    Turns out that this was due to not providing the full path to ~httpd~:
 
-   #+BEGIN_EXAMPLE
-     $ ./dist/bin/httpd -DFOREGROUND -f httpd.conf.h1
-
-     Honggfuzz Net Driver (pid=5381): TCP port:8080 will be used
-     [2018-10-24T13:03:16-0400][W][5381] netDriver_sockConn():173 Honggfuzz Net Driver (pid=5381): couldn't connect(loopback, port:8080)
-     Honggfuzz Net Driver (pid=5381): Waiting for the TCP server process to start accepting TCP connections at 127.0.0.1:8080. Sleeping for 1 second....
-     httpd: Could not open configuration file /home/calvin/git/Quick700/honggfuzz/dist/httpd.conf.h1: No such file or directory
-   #+END_EXAMPLE
-
-   Not sure if running Honggfuzz as above will make it connect and not
-   immediately die like this. Maybe that connection is messed up.
+    #+BEGIN_SRC sh
+      honggfuzz -f hong-apache/corpus_http2 -w hong-apache/httpd.wordlist -- ./dist/bin/httpd -DFOREGROUND -f httpd.conf.h2
+    #+END_SRC
