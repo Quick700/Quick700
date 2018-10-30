@@ -14,5 +14,5 @@ RUN apt-get update && apt-get install -y autoconf build-essential curl libexpat1
  && chmod +x compile_httpd_with_flags.sh \
  && CC="afl-clang-fast" CXX="afl-clang-fast++" ./compile_httpd_with_flags.sh \
  && make -C httpd-2.4.37 install
-COPY input input
+COPY persistence/input input
 CMD afl-fuzz -i input -o output /usr/local/apache_clean/bin/httpd -X -F @@
