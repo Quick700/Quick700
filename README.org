@@ -10,4 +10,4 @@
 
 * What's Happening?
 
-  There is a ~TODO.org~ file which lists some of the ongoing work.
+  There is a project https://github.com/Quick700/Quick700/projects/1 which lists some of the ongoing work.
