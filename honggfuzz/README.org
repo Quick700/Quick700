@@ -12,6 +12,14 @@
    #+END_SRC
 
    Should get you set up.
+   
+   Before attempting the below you may need to compile Honggfuzz
+   
+   #+BEGIN_SRC sh
+     cd honggfuzz
+     make
+     cd ..
+   #+END_SRC
 
    #+BEGIN_SRC sh
      # Go into the apache directory
