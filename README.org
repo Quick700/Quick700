@@ -1,0 +1,13 @@
+* Introduction
+
+  This repository is for a case study analyzing the effectiveness of
+  different fuzzers on web browsers, with an emphasis on evaluating
+  FuzzChick for testing Apache's httpd.
+
+* Directory Structure
+
+  - ~honggfuzz~: Contains files and submodules for running honggfuzz
+
+* What's Happening?
+
+  There is a ~TODO.org~ file which lists some of the ongoing work.
