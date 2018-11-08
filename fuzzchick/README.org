@@ -1,0 +1,35 @@
+* Introduction
+
+  Directory for testing FuzzChick. Should be relatively easy to install:
+
+  #+BEGIN_SRC sh
+    cd QuickChick
+    make
+    make install
+  #+END_SRC
+
+  You will need Coq, and it may prompt you to install some libraries:
+
+  #+BEGIN_SRC sh
+    opam repo add coq-released http://coq.inria.fr/opam/released
+    opam install coq.8.8.2 && opam pin add coq 8.8.2
+
+    opam install coq-ext-lib
+    opam install coq-mathcomp-ssreflect
+    opam install coq-simple-io
+  #+END_SRC
+
+  But that should be about it.
+
+* Running FuzzChick
+
+  There is a [[./QuickChick/examples/fuzz-ifc][examples/fuzz-ifc]] directory in QuickChick that is related
+  to FuzzChick. I am currently not too sure how to run this.
+
+  There are some comments here:
+
+  https://github.com/Quick700/Quick700/issues/5
+
+  Sounds like FuzzChick will compile tests as a binary tester, which
+  it then runs AFL on. The binary tester will intentionally crash when
+  the checker fails for a given test.
