@@ -1,14 +1,28 @@
 * Introduction
 
-  Directory for testing FuzzChick. Should be relatively easy to install:
+  Directory for testing FuzzChick.
+
+* Installation
+
+  Make sure you have the latest QuickChick submodule:
 
   #+BEGIN_SRC sh
-    cd QuickChick
-    make
-    make install
+    git pull
+    git submodule update --init
   #+END_SRC
 
-  You will need Coq, and it may prompt you to install some libraries:
+  In order to use FuzzChick you need the AFL instrumentation for ocaml:
+
+  #+BEGIN_SRC sh
+    opam switch create 4.04.0+afl
+    opam install afl
+  #+END_SRC
+
+  I believe this will set up an ocaml compiler which instruments
+  binaries for AFL, and installs AFL via opam (not sure if the version
+  from opam is special).
+
+  You will need Coq, and some libraries for Coq as well.
 
   #+BEGIN_SRC sh
     opam repo add coq-released http://coq.inria.fr/opam/released
@@ -19,7 +33,14 @@
     opam install coq-simple-io
   #+END_SRC
 
-  But that should be about it.
+  But that should be about it. After this FuzzChick should be
+  relatively easy to install:
+
+  #+BEGIN_SRC sh
+    cd QuickChick
+    make
+    make install
+  #+END_SRC
 
 * Running FuzzChick
 
