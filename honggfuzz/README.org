@@ -33,7 +33,7 @@
 
      # Install using the modified honggfuzz configure script...
      # Make sure /usr/bin/env python launches python 2, otherwise this will fail.
-     ./../compile_and_install_asan.sh
+     ./../compile_and_install.asan.sh
    #+END_SRC
 
    Now we just need to configure Apache's httpd for Honggfuzz... Unfortunately we have to edit some files.
