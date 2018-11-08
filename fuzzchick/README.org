@@ -44,15 +44,25 @@
     make install
   #+END_SRC
 
-* Running FuzzChick
-
-  There is a [[./QuickChick/examples/fuzz-ifc][examples/fuzz-ifc]] directory in QuickChick that is related
-  to FuzzChick. I am currently not too sure how to run this.
-
-  There are some comments here:
-
-  https://github.com/Quick700/Quick700/issues/5
+* How Does FuzzChick Work?
 
   Sounds like FuzzChick will compile tests as a binary tester, which
   it then runs AFL on. The binary tester will intentionally crash when
-  the checker fails for a given test.
+  the checker fails for a given test. There are some comments here:
+
+  https://github.com/Quick700/Quick700/issues/5
+
+* Running FuzzChick
+
+  There is a [[./QuickChick/examples/fuzz-ifc][examples/fuzz-ifc]] directory in QuickChick that is related
+  to FuzzChick. There are some comments for running this here:
+
+  https://github.com/Quick700/Quick700/issues/5
+
+  #+BEGIN_SRC sh
+    cd QuickChick/examples/fuzz-ifc/
+    mkdir output
+    ./runtests.sh
+
+    tail -f output/fuzz_seeded_SSNI_arbitrary_*.out
+  #+END_SRC
