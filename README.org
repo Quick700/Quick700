@@ -7,6 +7,8 @@
 * Directory Structure
 
   - ~honggfuzz~: Contains files and submodules for running honggfuzz
+  - ~afl~: Dockerfile for running AFL on Apache's httpd
+  - ~fuzzchick~: Instructions for installing the FuzzChick variant of QuickChick
 
 * What's Happening?
 
