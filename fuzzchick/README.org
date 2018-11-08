@@ -38,6 +38,7 @@
 
   #+BEGIN_SRC sh
     cd QuickChick
+    make clean
     make
     make install
   #+END_SRC
