@@ -16,6 +16,7 @@
   #+BEGIN_SRC sh
     opam switch create 4.04.0+afl
     opam install afl
+    opam install afl-persistent
   #+END_SRC
 
   I believe this will set up an ocaml compiler which instruments
