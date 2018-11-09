@@ -2,3 +2,5 @@ dist
 httpd.conf.*
 .DS_Store
 *~
+.*.swp
+log
