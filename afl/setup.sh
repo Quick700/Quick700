@@ -2,5 +2,3 @@ curl -L https://gist.githubusercontent.com/n30m1nd/28d193d99e02ad572927905cb315a
 CC="afl-clang" CXX="afl-clang++" ./compile_httpd_with_flags.sh
 cd httpd-2.4.37/
 make install
-cd ..
-afl-fuzz -i input/ -o output/ -m none -t 2000 -- /usr/local/apache_clean/bin/httpd -X -F @@
