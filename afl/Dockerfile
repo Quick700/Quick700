@@ -14,5 +14,5 @@ RUN apt-get update && apt-get install -y python-dev apt-utils autoconf build-ess
  && chmod +x compile_httpd_with_flags.sh \
  && curl -L https://github.com/Quick700/Quick700/blob/master/afl/setup.sh > setup.sh \
  && chmod +x setup.sh \
- && ./setup.sh
+ && ./setup.sh \
  && afl-fuzz -i input/ -o output/ -m none -t 2000 -- /usr/local/apache_clean/bin/httpd -X -F @@
