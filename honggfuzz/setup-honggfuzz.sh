@@ -1,7 +1,4 @@
 #!/bin/sh
-git pull
-git submodule update --init
-
 cd honggfuzz
 make
 cd ..

@@ -6,7 +6,11 @@
    be set to fetch version 2.4.37 of Apache's httpd, as well as the
    latest versions of ~apr~ and ~apr-util~.
 
-   #+BEGIN_SRC sh :tangle setup-honggfuzz.sh :shebang "#!/bin/sh"
+   All of these commands are extracted from org-babel into the
+   ~setup-honggfuzz.sh~ file, which you should be able to execute in
+   order to setup Honggfuzz.
+
+   #+BEGIN_SRC sh
      git pull
      git submodule update --init
    #+END_SRC
@@ -15,7 +19,7 @@
    
    Before attempting the below you may need to compile Honggfuzz
    
-   #+BEGIN_SRC sh :tangle setup-honggfuzz.sh
+   #+BEGIN_SRC sh  :tangle setup-honggfuzz.sh :shebang "#!/bin/sh"
      cd honggfuzz
      make
      cd ..
