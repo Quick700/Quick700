@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y python-dev apt-utils autoconf build-ess
  && curl ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.bz2 | tar xj \
  && curl -L https://gist.githubusercontent.com/n30m1nd/14418fd425a3b2d14b64650710fae301/raw/e1cff738eb1ffaa55cb8a1a66bb1a2b06ed7f97e/compile_httpd_with_flags.sh | sed "s/skylake/native/" > compile_httpd_with_flags.sh \
  && chmod +x compile_httpd_with_flags.sh \
- && curl -L https://github.com/Quick700/Quick700/blob/master/afl/setup.sh > setup.sh \
+ && curl -L https://raw.githubusercontent.com/Quick700/Quick700/master/afl/setup.sh > setup.sh \
  && chmod +x setup.sh \
- && ./setup.sh \
- && afl-fuzz -i input/ -o output/ -m none -t 2000 -- /usr/local/apache_clean/bin/httpd -X -F @@
+ && ./setup.sh
+ CMD afl-fuzz -i input/ -o output/ -m none -t 2000 -- /usr/local/apache_clean/bin/httpd -X -F @@
