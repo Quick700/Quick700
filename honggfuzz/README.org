@@ -6,7 +6,7 @@
    be set to fetch version 2.4.37 of Apache's httpd, as well as the
    latest versions of ~apr~ and ~apr-util~.
 
-   #+BEGIN_SRC sh
+   #+BEGIN_SRC sh :tangle setup-honggfuzz.sh :shebang "#!/bin/sh"
      git pull
      git submodule update --init
    #+END_SRC
@@ -15,13 +15,21 @@
    
    Before attempting the below you may need to compile Honggfuzz
    
-   #+BEGIN_SRC sh
+   #+BEGIN_SRC sh :tangle setup-honggfuzz.sh
      cd honggfuzz
      make
      cd ..
    #+END_SRC
 
-   #+BEGIN_SRC sh
+   # On the OpenSuse machines I had to do:
+
+   # #+BEGIN_SRC sh
+   #   LD_LIBRARY_PATH=$HOME:$LD_LIBRARY_PATH LDFLAGS="-L$HOME -lbfd -lopcodes -lz $HOME/libiberty.a" make
+   # #+END_SRC
+
+   with the appropriate libraries copied over.
+
+   #+BEGIN_SRC sh :tangle setup-honggfuzz.sh
      # Go into the apache directory
      cd apache
 
@@ -38,7 +46,7 @@
 
    Now we just need to configure Apache's httpd for Honggfuzz... Unfortunately we have to edit some files.
 
-   #+BEGIN_SRC sh
+   #+BEGIN_SRC sh :tangle setup-honggfuzz.sh
      # go back to Quick700/honggfuzz
      cd .. 
      ./make-configs.sh
