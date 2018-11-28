@@ -1,0 +1,113 @@
+\documentclass{beamer}
+
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\usepackage[backend=bibtex]{biblatex}
+\addbibresource{citations.bib}
+
+% http://tex.stackexchange.com/questions/68080/beamer-bibliography-icon
+\setbeamertemplate{bibliography item}{%
+  \ifboolexpr{ test {\ifentrytype{book}} or test {\ifentrytype{mvbook}}
+    or test {\ifentrytype{collection}} or test {\ifentrytype{mvcollection}}
+    or test {\ifentrytype{reference}} or test {\ifentrytype{mvreference}} }
+    {\setbeamertemplate{bibliography item}[book]}
+    {\ifentrytype{online}
+       {\setbeamertemplate{bibliography item}[online]}
+       {\setbeamertemplate{bibliography item}[article]}}%
+  \usebeamertemplate{bibliography item}}
+
+\defbibenvironment{bibliography}
+  {\list{}
+     {\settowidth{\labelwidth}{\usebeamertemplate{bibliography item}}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+
+% Colours for beamer.
+\setbeamercolor{frametitle}{fg=orange}
+\setbeamertemplate{itemize item}{\color{orange}$\blacksquare$}
+\setbeamertemplate{itemize subitem}{\color{orange}$\blacktriangleright$}
+
+% Colours for syntax highlighting
+\definecolor{syntax_red}{rgb}{0.7, 0.0, 0.0} % For strings
+\definecolor{syntax_green}{rgb}{0.15, 0.5, 0.25} % For comments
+\definecolor{syntax_orange}{rgb}{0.7, 0.4, 0.2} % For keywords
+
+
+% Haskell settings for lstlisting
+\lstset{language=Haskell,
+basicstyle=\ttfamily\tiny,
+keywordstyle=\color{syntax_orange}\bfseries,
+stringstyle=\color{syntax_red},
+commentstyle=\color{syntax_green},
+numbers=none,
+numberstyle=\color{black},
+stepnumber=1,
+frame=single,
+breaklines=true,
+numbersep=10pt,
+tabsize=4,
+showspaces=false,
+showstringspaces=false}
+
+\author{
+  Beck, Calvin \and Huang, Jiani \and Li, Yishuai
+}
+
+\begin{document}
+
+\begin{frame}
+  \frametitle{FuzzChick}
+  \maketitle
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{What is this talk about?}
+
+  FuzzChick!
+
+  \pause
+
+  What is FuzzChick...?
+
+  \pause
+
+  FuzzChick is an experiment to improve QuickChick using ideas from
+  fuzzing, such as AFL.
+
+  We'll come back to this...
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{QuickChick: A Brief Review}
+
+  Okay,
+  What is QuickChick, and how does it work?
+\end{frame}
+
+\section{End}
+
+\begin{frame}
+  \frametitle{Conclusion! Questions?}
+
+  \huge{Whew!}
+\end{frame}
+
+\begin{frame}
+  \frametitle{References}
+
+  \nocite{*}
+  \printbibliography
+
+  These are all good resources! You should look at them!
+\end{frame}
+\end{document}
