@@ -72,27 +72,93 @@ showstringspaces=false}
 \begin{frame}
   \frametitle{What is this talk about?}
 
-  FuzzChick!
+  \pause
+
+  {\huge FuzzChick!}\\~\\
 
   \pause
 
-  What is FuzzChick...?
+  What is FuzzChick...? \\~\\
 
   \pause
 
   FuzzChick is an experiment to improve QuickChick using ideas from
-  fuzzing, such as AFL.
+  fuzzing, such as AFL.\\~\\~\\
 
-  We'll come back to this...
+  \pause
+
+  {\huge We'll come back to this...}\\
 
 \end{frame}
 
 \begin{frame}
   \frametitle{QuickChick: A Brief Review}
 
-  Okay,
-  What is QuickChick, and how does it work?
+  QuickChick is a properties based testing framework for Coq. \\
+
+  \begin{itemize}
+  \item You build (or derive) generators for data types.
+  \item Using those generators you can feed data into test cases.
+  \item These test cases can be any arbitrary predicate.
+  \end{itemize}
 \end{frame}
+
+\begin{frame}
+  \frametitle{QuickChick: Pros and Cons}
+
+  So what's great about QuickChick?\\
+
+  \begin{itemize}
+  \item Relatively easy to build / derive generators.
+  \item Can generate lots of tests for specific properties
+    automatically.
+  \end{itemize}
+
+  \pause
+
+  What's not so great about QuickChick?\\
+
+  \pause
+
+  \begin{itemize}
+  \item Getting \emph{good} generators can be hard!
+  \end{itemize}
+\end{frame}
+
+\section{Good Generators}
+
+\begin{frame}
+  \frametitle{What makes a good generator?}
+
+  The basic idea of what makes a generator ``good'' can vary somewhat
+  based on the context.\cite{lampropoulosgenerating}
+\end{frame}
+
+\section{FuzzChick}
+
+\begin{frame}
+  \frametitle{Finally, FuzzChick!}
+
+  FuzzChick uses AFL to make the choices between constructors for
+  building data types for tests.\\
+
+  \pause
+
+  Why is this good? \\
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{FuzzChick Intuition}
+
+  The intuition behind FuzzChick is that you
+\end{frame}
+
+\section{Evaluating FuzzChick}
+
+\subsection{FuzzChick and Apache}
+
+\subsection{FuzzChick Coverage}
 
 \section{End}
 
