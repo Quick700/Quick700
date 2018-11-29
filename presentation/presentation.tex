@@ -197,6 +197,11 @@ showstringspaces=false}
     \pause
   \item Includes a lot of excessive extracted Coq code.
     \pause
+    \begin{itemize}
+    \item Like... All of QuickChick :(.
+    \item So, the percentages are a little off.
+    \end{itemize}
+    \pause
   \item QuickChick generates ``random'' files for each test, and the
     names aren't all that useful
     \begin{itemize}
@@ -221,6 +226,53 @@ showstringspaces=false}
 
   \includegraphics[width=\textwidth]{ifccoverage.png} \\
   
+\end{frame}
+
+\begin{frame}
+  \frametitle{QuickChick vs FuzzChick: ifc-basic}
+
+  QuickChick: \\~\\
+
+  \includegraphics[width=\textwidth]{ifcquickchick.png} \\~\\
+
+  \pause
+
+  FuzzChick: \\~\\
+
+  \includegraphics[width=\textwidth]{ifcfuzzchick.png} \\~\\
+  
+  For some reason it seems that FuzzChick actually gets worse coverage
+  than QuickChick on this test case... At least in the time I let it run (I'm not
+  terribly patient)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why Worse Coverage?}
+
+  \begin{itemize}
+  \item Just need to let it run longer?
+    \begin{itemize}
+    \item AFL needs a while to ``warm up''?
+    \end{itemize}
+    \pause
+  \item QuickChick test already managed to get good coverage in this
+    instance, so fuzzing doesn't give us much on top of it?
+    \begin{itemize}
+    \item Hard to tell what ``good coverage'' is due to the extraneous
+      code extracted by QuickChick.
+    \end{itemize}
+    \pause
+  \item Something's not instrumented correctly?
+    \pause
+  \item This test case, for whatever reason, is fuzzer unfriendly?
+    \begin{itemize}
+    \item Maybe extracted Coq could be fuzzer unfriendly? Lots of
+      inefficient data types like like \texttt{nat} (basically a
+      linked list whose length represents a number).
+    \item Could result in excessively long paths and hard to solve
+      predicates for DSE?
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Honourable Mentions}
