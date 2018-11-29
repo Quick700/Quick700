@@ -83,7 +83,7 @@ showstringspaces=false}
   \pause
 
   FuzzChick is an experiment to improve QuickChick using ideas from
-  fuzzing, such as AFL.\\~\\~\\
+  fuzzing, such as AFL \cite{AFL}.\\~\\~\\
 
   \pause
 
@@ -271,8 +271,71 @@ showstringspaces=false}
       linked list whose length represents a number).
     \item Could result in excessively long paths and hard to solve
       predicates for DSE?
+    \item Not sure that having pointers everywhere would be AFL's
+      strength...
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Some Further Coverage Testing...}
+
+  Test case:
+
+\begin{lstlisting}[language=Haskell]
+Extract Constant unlikely_branch =>
+" fun i ->
+  if (0 < i)
+  then if (i mod 100 == 0)
+       then if (i mod 1000 == 0)
+            then if (i mod 10000 == 0)
+                 then if (i mod 100000 == 0)
+                      then if (i mod 1000000 == 0)
+                           then if (i < 1000001)
+                                then 42
+                                else 0
+                           else 0
+                      else 0
+                 else 0
+            else 0
+       else 0
+  else 0
+".
+
+
+Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_branch n =? 0).
+\end{lstlisting}
+
+  \pause
+
+  {\large Trying to give AFL a good chance to find the failing branch...}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+
+  In the equivalent C code AFL does quite well... \\~\\
+
+  \pause
+
+  QuickChick: \\
+
+  \includegraphics[width=\textwidth]{qc_branches.png} \\~\\
+
+  FuzzChick: \\
+
+  \includegraphics[width=\textwidth]{fuzz_branches.png} \\~\\
+
+  \pause
+  
+  Here not so much? FuzzChick doesn't make it as far... \\~\\
+
+  \pause
+
+  Well, in fairness, it does eventually, but it takes a good 30
+  minutes. QuickChick was much faster.
+  
 \end{frame}
 
 \section{Honourable Mentions}
