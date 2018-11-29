@@ -334,7 +334,12 @@ Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_br
   \pause
 
   Well, in fairness, it does eventually, but it takes a good 30
-  minutes. QuickChick was much faster.
+  minutes. QuickChick was much faster. \\~\\
+
+  \pause
+
+  Suggests maybe the extracted ocaml is harder for AFL to analyze? The
+  C branches were discovered very quickly by AFL.
   
 \end{frame}
 
