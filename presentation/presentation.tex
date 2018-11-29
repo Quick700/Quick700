@@ -131,7 +131,12 @@ showstringspaces=false}
   \frametitle{What makes a good generator?}
 
   The basic idea of what makes a generator ``good'' can vary somewhat
-  based on the context.\cite{lampropoulosgenerating}
+  based on the context. \\
+
+  \pause
+
+  In general you want good coverage. How can you achieve that with
+  minimal work?
 \end{frame}
 
 \section{FuzzChick}
@@ -144,14 +149,18 @@ showstringspaces=false}
 
   \pause
 
-  Why is this good? \\
+  Why is this good?
 
 \end{frame}
 
 \begin{frame}
   \frametitle{FuzzChick Intuition}
 
-  The intuition behind FuzzChick is that you
+  AFL uses DSE to attempt to get good coverage while fuzzing...\\
+
+  \pause
+
+  Maybe we can utilize AFL's smarts to achieve better test coverage.
 \end{frame}
 
 \section{Evaluating FuzzChick}
@@ -159,6 +168,24 @@ showstringspaces=false}
 \subsection{FuzzChick and Apache}
 
 \subsection{FuzzChick Coverage}
+
+\begin{frame}
+  \frametitle{QuickChick: Now With Coverage!}
+
+  We instrumented QuickChick using bisect\_ppx to get coverage
+  estimates!\\~\\
+
+  \pause
+
+  This \emph{mostly} went smoothly...\\~\\
+
+  \includegraphics[width=\textwidth]{bisectbug.png} \\
+
+  \pause
+
+  Maintainer fixed this issue promptly, which was \emph{awesome}!
+  
+\end{frame}
 
 \section{End}
 
