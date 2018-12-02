@@ -343,6 +343,16 @@ Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_br
   
 \end{frame}
 
+\begin{frame}
+  \frametitle{Performance}
+  \begin{itemize}
+  \item Fuzzing is an order of magnitude slower than random testing.
+  \item Performance bottleneck: disk access.
+  \item Experiments to see whether the instrumentation overhead is worth it are
+    still in preliminary stages.
+  \end{itemize}
+\end{frame}
+
 \section{Honourable Mentions}
 
 \begin{frame}
