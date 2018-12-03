@@ -1,7 +1,7 @@
 opam switch 4.08+afl
 eval $(opam env)
 opam repo add coq-released https://coq.inria.fr/opam/released
-git clone https://github.com/QuickChick/QuickChick.git
+git clone -b FuzzChick https://github.com/QuickChick/QuickChick.git
 opam pin add QuickChick
 curl -L https://www-us.apache.org/dist//apr/apr-1.6.5.tar.bz2 | tar xj
 curl -L https://www-us.apache.org/dist//apr/apr-util-1.6.1.tar.bz2 | tar xj
