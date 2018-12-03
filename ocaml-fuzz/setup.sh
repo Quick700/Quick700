@@ -1,4 +1,4 @@
-opam switch 4.08+afl
+opam switch 4.07+afl
 eval $(opam env)
 opam repo -a add coq-released https://coq.inria.fr/opam/released
 git clone -b FuzzChick https://github.com/QuickChick/QuickChick.git

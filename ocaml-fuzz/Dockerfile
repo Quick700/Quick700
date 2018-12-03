@@ -1,4 +1,4 @@
-FROM ocaml/opam2:ubuntu-16.04-ocaml-4.08
+FROM ocaml/opam2:ubuntu-16.04-ocaml-4.07
 WORKDIR ..
 COPY . .
 RUN sudo apt-get update && sudo apt-get install -y python-dev apt-utils autoconf build-essential curl libexpat1-dev libtool pkg-config libssl-dev subversion git unzip vim libwww-perl wget \
