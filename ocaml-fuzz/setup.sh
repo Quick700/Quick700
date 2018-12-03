@@ -1,7 +1,8 @@
-sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
-opam init --disable-sandboxing
+opam switch 4.08+afl
 eval $(opam env)
-opam install coq
+opam repo add coq-released https://coq.inria.fr/opam/released
+git clone https://github.com/QuickChick/QuickChick.git
+opam pin add QuickChick
 curl -L https://www-us.apache.org/dist//apr/apr-1.6.5.tar.bz2 | tar xj
 curl -L https://www-us.apache.org/dist//apr/apr-util-1.6.1.tar.bz2 | tar xj
 curl -L https://github.com/apache/httpd/archive/2.4.24.tar.gz | tar xz
