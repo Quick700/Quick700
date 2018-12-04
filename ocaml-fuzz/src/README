@@ -1,0 +1,2 @@
+You need to modify line 36 in fuzz_apache and line 10 in try.ml according to
+the installation path of httpd.

@@ -26,18 +26,20 @@ Require Import Coq.ssr.ssrbool.
 
 Parameter start : list ascii -> Z.
 
-Extract Constant start => " fun request -> let pid () = Unix.create_process ""httpd "" [|""httpd"" ; ""-k"" ; ""start"" ; ""-D"" ; ""fuzz"";  ""-d"" ;"".""; ""-f""; let camlstring_of_coqstring (s: char list) =
+Extract Constant start => " fun request ->
+let camlstring_of_coqstring (s: char list) =
   let r = Bytes.create (List.length s) in
   let rec fill pos = function
   | [] -> r
   | c :: s -> Bytes.set r pos c; fill (pos + 1) s
   in Bytes.to_string (fill 0 s) in
+let pid () = Unix.create_process ""/root/apache_clean/bin/httpd "" [|""/root/apache_clean/bin/httpd"" ; ""-k"" ; ""start"" ; ""-D"" ; ""fuzz"";  ""-d"" ;"".""; ""-f"";
 camlstring_of_coqstring request|] Unix.stdin Unix.stdout Unix.stderr in try pid () with  | Unix.Unix_error ( _, _, _) -> -1;;".
 Extract Constant print_extracted_coq_string => "print_string".
 
 Lemma decidable_good_input: forall (testfile: list ascii), decidable (( Z.lt 0 (start testfile))).
 Proof.
-  intros. 
+  intros.
   unfold decidable.
   eapply Z_lt_dec.
 Qed.
@@ -48,12 +50,12 @@ Proof. apply decidable_good_input. Qed.
 Definition good_input (testfile : list ascii):= (Z.lt 0 (start testfile))?.
 
 
-Derive (Arbitrary, Show) for ascii. 
+Derive (Arbitrary, Show) for ascii.
 Derive (Arbitrary, Show) for string.
-Print Showstring. 
+Print Showstring.
 
 Derive (Arbitrary, Show) for positive.
 Derive (Arbitrary, Show) for Z.
 
-Print Showstring. 
+Print Showstring.
 QuickChick good_input.
