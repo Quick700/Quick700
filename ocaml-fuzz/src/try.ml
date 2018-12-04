@@ -7,10 +7,13 @@ let camlstring_of_coqstring (s: char list) =
   | [] -> r
   | c :: s -> Bytes.set r pos c; fill (pos + 1) s
   in Bytes.to_string (fill 0 s) in
-let pid () = Unix.create_process "/root/apache_clean/bin/httpd " [|"/root/apache_clean/bin/httpd" ; "-k" ; "start" ; "-D" ; "fuzz";  "-d" ;"."; "-f";
+let pid () = Unix.create_process "httpd" [|"httpd";"-k" ; "start" ; "-X" ; "-F" ;
 camlstring_of_coqstring request|] Unix.stdin Unix.stdout Unix.stderr in
-try pid () with
-| Unix.Unix_error ( _, _, _) -> -1;;
+ pid () ; match Unix.wait () with
+| ( _, WEXITED 0 ) -> 1
+| ( _, WEXITED 1 ) -> -1
+| ( _, WEXITED a ) -> a
+| _ -> -2
 
 let coqstring_of_camlstring s =
   let rec cstring accu pos =
@@ -18,5 +21,5 @@ let coqstring_of_camlstring s =
   in cstring [] (String.length s - 1)
 
 let main =
-  let test_name = "Gvacip" in
+  let test_name = "./input/GET_test" in
   print_endline( string_of_int (start ( coqstring_of_camlstring test_name ) ))

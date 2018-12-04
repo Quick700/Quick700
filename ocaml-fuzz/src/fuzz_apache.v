@@ -33,7 +33,7 @@ let camlstring_of_coqstring (s: char list) =
   | [] -> r
   | c :: s -> Bytes.set r pos c; fill (pos + 1) s
   in Bytes.to_string (fill 0 s) in
-let pid () = Unix.create_process ""/root/apache_clean/bin/httpd "" [|""/root/apache_clean/bin/httpd"" ; ""-k"" ; ""start"" ; ""-D"" ; ""fuzz"";  ""-d"" ;"".""; ""-f"";
+let pid () = Unix.create_process ""httpd "" [|""httpd"" ; ""-k"" ; ""start"" ; ""-X"" ; ""-F"";
 camlstring_of_coqstring request|] Unix.stdin Unix.stdout Unix.stderr in try pid () with  | Unix.Unix_error ( _, _, _) -> -1;;".
 Extract Constant print_extracted_coq_string => "print_string".
 
