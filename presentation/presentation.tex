@@ -355,19 +355,19 @@ Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_br
 \end{frame}
 
 \begin{frame}
-  \frametitle{Fuzzing Large Project}
-  How does these two tools perform on the large scale project?
+  \frametitle{Fuzzing a Large Project}
+  How do QuickChick and FuzzChick perform on a large scale project? \\~\\
   
   \pause
-  We tried them on apache,
+  We tried them on Apache's httpd, \\~\\
   
   \pause
-  And unfortunately they performed not so well.
+  And unfortunately they performed not so well...
     
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 Setting up the experiment: \\~\\
 
 coq $\xrightarrow[]{???}$ C (apache) \\~\\
@@ -378,33 +378,42 @@ coq $\xrightarrow[]{Extract}$ Ocaml $\xrightarrow[]{Unix call}$ C (apache)
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 
-Good news:
+\textbf{Good news:}
 
-Both Quickchick and FuzzChick successfully run on the apache server.
+\begin{itemize}
+\item Both Quickchick and FuzzChick successfully run on the apache server. \\~\\
+\end{itemize}
+
 
 \pause{}
-Bad news:
+\textbf{Bad news:}
 
-We failed to go deeper than the client side on the server.
+\begin{itemize}
+\item We failed to go deeper than the client side on the server.
+\end{itemize}
+
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 
-Background: \\~\\
-We are using the patch which is mentioned in AFL, so that the apache server will take in a string as its argument. \\~\\
-\pause{}
-But this patch used pthread to launch the server and what is happening at the backend is obscure (aka. neither humanbeing nor AFL knows what it is doing). \\~\\
-\pause{}
-The pthread is not AFL instrumented and AFL cannot analysis the underlying path in the blackbox and do its state driven fuzzing technique. (GDB results said so :p)
+\textbf{Background:}
+  \begin{itemize}
+  \item We are using the patch which is mentioned in AFL, so that the apache server will take in a string as its argument.
+    \pause{}
+  \item But this patch used pthread to launch the server and what is happening at the backend is obscure (aka. neither humanbeing nor AFL knows what it is doing).
+    \pause{}
+  \item The pthread is not AFL instrumented and AFL cannot analysis the underlying path in the blackbox and do its state driven fuzzing technique. (GDB results said so :p)
+  \end{itemize}
+
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 
 Since I don't know what is the string that will make Apache run normally.
 (Thanks to the lack of documentation and the pthread function the patch is using.)
@@ -413,32 +422,32 @@ I want the fuzzers to help me capture what is a string that will make the patche
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 
-Quickchick: \\~\\
+\textbf{Quickchick:} \\~\\
 
 \begin{itemize}
-    \item pros: Quickchick runs pretty fast at generating test cases.
+    \item \textbf{Pros:} Quickchick runs pretty fast at generating test cases.
     
-    \item Cons: Quickchick fails to capture the successful case I want when we generate 10000 random strings. (That sounds natural I guess).
+    \item \textbf{Cons:} Quickchick fails to capture the successful case I want when we generate 10000 random strings. (That sounds natural I guess).
 \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
-FuzzChick: \\~\\
+\frametitle{Fuzzing a Large Project}
+\textbf{FuzzChick:} \\~\\
 
 \begin{itemize}
-    \item pros: FuzzChick runs AFL and AFL does not generate random string, but it can cheat on having some testscript that people wrote.
+    \item \textbf{Pros:} FuzzChick runs AFL and AFL does not generate random string, but it can cheat on having some testscript that people wrote.
     
-    \item cons: It runs pretty slowly (~1.2s per testcase). Maybe the string it comes up with is meaningful to the server.
+    \item \textbf{Cons:} It runs pretty slowly (~1.2s per testcase). Maybe the string it comes up with is meaningful to the server.
 \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
     What if we specify a richer spec to coq? \\~\\
     \pause{}
     Instead of getting the label that whether the apache exit normally ot not, we tried to obtain the stdout string from apache to coq. \\~\\
@@ -448,9 +457,9 @@ FuzzChick: \\~\\
     Aborted.
 \end{frame}
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 
-Technical difficulties: \\~\\
+\textbf{Technical difficulties:} \\~\\
 
 \begin{itemize}
     \item The linkage between C to Ocaml and Ocaml to Coq is pretty messy. Code working in Ocaml does not necessarily compile when it is extracted to Coq. \\~\\
@@ -460,9 +469,9 @@ Technical difficulties: \\~\\
 \end{frame}
 
 \begin{frame}
-\frametitle{Fuzzing Large Project}
+\frametitle{Fuzzing a Large Project}
 
-Takeaway: \\~\\
+\textbf{Takeaway:} \\~\\
 It is not yet very practical to fuzz large real world project with coq and ocaml.
 
     
