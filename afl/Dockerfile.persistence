@@ -1,5 +1,5 @@
 FROM debian:jessie
-WORKDIR ~
+WORKDIR root
 RUN apt-get update && apt-get install -y autoconf build-essential curl libexpat1-dev libtool sudo \
  && curl http://releases.llvm.org/4.0.1/clang+llvm-4.0.1-x86_64-linux-gnu-debian8.tar.xz | tar xJ -C /usr/local --strip-components=1 \
  && curl http://lcamtuf.coredump.cx/afl/releases/afl-2.52b.tgz | tar xz \
