@@ -339,7 +339,7 @@ Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_br
 
   \pause
 
-  Suggests maybe the extracted ocaml is harder for AFL to analyze? The
+  Suggests maybe the extracted OCaml is harder for AFL to analyze? The
   C branches were discovered very quickly by AFL.
   
 \end{frame}
@@ -400,21 +400,6 @@ coq $\xrightarrow[]{Extract}$ Ocaml $\xrightarrow[]{Unix call}$ C (apache)
 \begin{frame}
 \frametitle{Fuzzing a Large Project}
 
-\textbf{Background:}
-  \begin{itemize}
-  \item We are using the patch which is mentioned in AFL, so that the apache server will take in a string as its argument.
-    \pause{}
-  \item But this patch used pthread to launch the server and what is happening at the backend is obscure (aka. neither humanbeing nor AFL knows what it is doing).
-    \pause{}
-  \item The pthread is not AFL instrumented and AFL cannot analysis the underlying path in the blackbox and do its state driven fuzzing technique. (GDB results said so :p)
-  \end{itemize}
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Fuzzing a Large Project}
-
 Since I don't know what is the string that will make Apache run normally.
 (Thanks to the lack of documentation and the pthread function the patch is using.)
 I want the fuzzers to help me capture what is a string that will make the patched apache run successfully (exit with 0).
@@ -452,28 +437,16 @@ I want the fuzzers to help me capture what is a string that will make the patche
     \pause{}
     Instead of getting the label that whether the apache exit normally ot not, we tried to obtain the stdout string from apache to coq. \\~\\
     \pause{}
-    It's too messy to specify in the ocaml library that the extracted ocaml function is using. We cannot compile the program. :(  \\~\\
+    It's too messy to specify in the OCaml library that the extracted OCaml function is using. We cannot compile the program. :(  \\~\\
     \pause{}
     Aborted.
-\end{frame}
-\begin{frame}
-\frametitle{Fuzzing a Large Project}
-
-\textbf{Technical difficulties:} \\~\\
-
-\begin{itemize}
-    \item The linkage between C to Ocaml and Ocaml to Coq is pretty messy. Code working in Ocaml does not necessarily compile when it is extracted to Coq. \\~\\
-    \item When we try to obtain more information from both of stderr and stdout in Ocaml, it is nontrivial to not stuck the terminal.
-\end{itemize}
-
 \end{frame}
 
 \begin{frame}
 \frametitle{Fuzzing a Large Project}
 
 \textbf{Takeaway:} \\~\\
-It is not yet very practical to fuzz large real world project with coq and ocaml.
-
+It is not yet very practical to fuzz large real world project with coq and OCaml.
     
 \end{frame}
 \section{Honourable Mentions}
