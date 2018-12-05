@@ -4,6 +4,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{mathtools}
+\usepackage{cancel}
 
 \usepackage[backend=bibtex]{biblatex}
 \addbibresource{citations.bib}
@@ -370,7 +371,11 @@ Setting up the experiment: \\~\\
 Coq $\xrightarrow[]{???}$ C (Apache) \\~\\
 
 \pause{}
-Coq $\xrightarrow[]{Extract}$ Ocaml $\xrightarrow[]{Unix call}$ C (Apache)
+
+Coq $\xrightarrow[]{Extract}$ \cancel{OCaml $\xrightarrow[]{Link}$ C (Apache)} \\~\\
+
+\pause{}
+Coq $\xrightarrow[]{Extract}$ OCaml $\xrightarrow[]{Unix call}$ C (Apache)
 
 \end{frame}
 
@@ -437,6 +442,24 @@ It is not yet very practical to fuzz large real world project with Coq and OCaml
 \end{frame}
 
 \section{End}
+
+\begin{frame}
+  \frametitle{Future Work for QuickChick}
+  \begin{itemize}
+  \item Better support for external program
+
+    QuickChick was originally designed to compile OCaml code extracted from
+    Coq. It used system calls to run external programs. To have AFL to analyze
+    the instance under test (IUT), we need to link the checker and IUT into one
+    instrumented executable.
+
+  \item Rich path coverage analysis
+
+    There are branches in generator, IUT, and checker. We are specifically
+    interested in the edge coverage of IUT. However, under current framework,
+    the IUT is opaque to analysis.
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{Conclusion! Questions?}
