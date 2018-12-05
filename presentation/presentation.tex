@@ -367,39 +367,18 @@ Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_br
 \frametitle{Fuzzing a Large Project}
 Setting up the experiment: \\~\\
 
-coq $\xrightarrow[]{???}$ C (apache) \\~\\
+coq $\xrightarrow[]{???}$ C (Apache) \\~\\
 
 \pause{}
-coq $\xrightarrow[]{Extract}$ Ocaml $\xrightarrow[]{Unix call}$ C (apache)
+Apache $\xrightarrow[]{Extract}$ Ocaml $\xrightarrow[]{Unix call}$ C (Apache)
 
 \end{frame}
 
 \begin{frame}
 \frametitle{Fuzzing a Large Project}
 
-\textbf{Good news:}
-
-\begin{itemize}
-\item Both Quickchick and FuzzChick successfully run on the apache server. \\~\\
-\end{itemize}
-
-
-\pause{}
-\textbf{Bad news:}
-
-\begin{itemize}
-\item We failed to go deeper than the client side on the server.
-\end{itemize}
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Fuzzing a Large Project}
-
-Since I don't know what is the string that will make Apache run normally.
-(Thanks to the lack of documentation and the pthread function the patch is using.)
-I want the fuzzers to help me capture what is a string that will make the patched apache run successfully (exit with 0).
+\textbf {Target:} \\~\\
+I want the fuzzers to help me capture what is a string that will make the patched Apache run successfully (exit with 0).
     
 \end{frame}
 
@@ -421,18 +400,18 @@ I want the fuzzers to help me capture what is a string that will make the patche
 \textbf{FuzzChick:} \\~\\
 
 \begin{itemize}
-    \item \textbf{Pros:} FuzzChick runs AFL and AFL does not generate random string, but it can cheat on having some testscript that people wrote.
+    \item \textbf{Pros:} FuzzChick runs AFL and AFL does not generate random string, but it can cheat on having some test script that people wrote.
     
-    \item \textbf{Cons:} It runs pretty slowly (~1.2s per testcase). Maybe the string it comes up with is meaningful to the server.
+    \item \textbf{Cons:} It runs pretty slowly (~1.2s per test case). Maybe the string it comes up with is meaningful to the server.
 \end{itemize}
 
 \end{frame}
 
 \begin{frame}
 \frametitle{Fuzzing a Large Project}
-    What if we specify a richer spec to coq? \\~\\
+    What if we specify a richer spec to Coq? \\~\\
     \pause{}
-    Instead of getting the label that whether the apache exit normally ot not, we tried to obtain the stdout string from apache to coq. \\~\\
+    Instead of getting the label that whether the Apache exit normally or not, we tried to obtain the stdout string from Apache to Coq. \\~\\
     \pause{}
     It's too messy to specify in the OCaml library that the extracted OCaml function is using. We cannot compile the program. :(  \\~\\
     \pause{}
@@ -443,7 +422,7 @@ I want the fuzzers to help me capture what is a string that will make the patche
 \frametitle{Fuzzing a Large Project}
 
 \textbf{Takeaway:} \\~\\
-It is not yet very practical to fuzz large real world project with coq and OCaml.
+It is not yet very practical to fuzz large real world project with Coq and OCaml.
     
 \end{frame}
 \section{Honourable Mentions}
