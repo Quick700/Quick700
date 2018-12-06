@@ -42,7 +42,6 @@ let coqstring_of_camlstring s =
     if pos < 0 then accu else cstring (s.[pos] :: accu) (pos - 1)
     in cstring [] (String.length s - 1) ;;
 
-    
 let camlstring_of_coqstring (s: char list) =
   let r = Bytes.create (List.length s) in
   let rec fill pos = function

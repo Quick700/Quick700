@@ -1,1 +1,2 @@
-*.v
+fuzz_apache_exit_code.v
+fuzz_apache_stdout.v	
