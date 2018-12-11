@@ -1,0 +1,178 @@
+* Introduction
+
+  FuzzChick is a new project which aims to improve QuickChick through
+  the use of fuzzing techniques. Our primary objective for our CIS-700
+  project was to utilize FuzzChick and examine its effectiveness.
+
+* What is QuickChick?
+
+  To begin with it's worth recalling what QuickChick is!
+
+  QuickChick is a property based testing framework in Coq. The high
+  level overview of how QuickChick works is that it generates values
+  of certain data types randomly, and then feeds these values into a
+  tester for a function. A simple example of this would be randomly
+  generating a list of integers, feeding this list to a sort function,
+  and then running the output of this sort function through a function
+  that checks whether or not the list is sorted.
+
+  This is a pretty simple idea, but it works incredibly well in
+  practice. Furthermore, QuickChick has many nice features where it
+  can automatically derive random generators for values of different
+  types and, importantly, a feature where it can shrink test cases to
+  smaller much more easily understood test cases.
+
+* What Does FuzzChick Hope to do?
+
+  QuickChick is already a very useful tool, but sometimes getting good
+  generators can be hard. Often times the user has to carefully tweak
+  the distribution that test cases are generated with in order to
+  properly exercise their code and get good test coverage. This
+  negates the advantages of being able to derive generators for
+  different data types, and makes the barrier of entry much higher for
+  sophisticated test cases.
+
+** Fuzzing?
+
+   This is where AFL comes in. AFL is a fuzzing tool that has some
+   intelligence about how to generate inputs to a program in order to
+   explore as many distinct paths through the program as possible. The
+   idea for FuzzChick is to leverage the work which went into AFL and
+   use it as a black box to improve test case generation --- i.e., in
+   order to generate test cases which achieve better code coverage and
+   are more likely to find bugs without manually tweaking a generator.
+
+   To achieve this Dr. Lampropoulos modified QuickChick to use an
+   input stream generated from AFL as the source of
+   randomness. Instead of using a random number generator to directly
+   pick which constructor to choose for a data type when generating it
+   at each point, the "randomness" in QuickChick now comes from
+   AFL. The hope of this is that AFL will be able to pick the "random
+   stream" in order to construct values that explore new paths in the
+   program.
+
+* Evaluating FuzzChick
+
+** Coverage with bisect_ppx
+
+   We wanted to know if FuzzChick actually generated better test
+   cases. Since the goal is to increase test coverage, we thought it
+   would be worthwhile to see how FuzzChick impacted coverage using
+   bisect_ppx (Bisect).
+
+   Bisect is a code coverage tool in ocaml that measures how often
+   each expression within an ocaml program is evaluated. We modified
+   QuickChick to output code instrumented with Bisect. This was a
+   relatively straightforward process as QuickChick normally runs all
+   of its tests in ocaml, however we encountered a couple of bugs in
+   the Bisect tool which made this process take a little
+   longer. Bisect would go into an infinite loop if you compile the
+   program using absolute paths, which QuickChick did. Verifying that
+   this was the case took a little bit of time as it was unclear
+   whether or not the extracted Coq code from QuickChick would make
+   use of features (fancy recursive types, Obj.magic, etc) which
+   caused Bisect to choke, however after some testing on a simple
+   hello world program and some "delta debugging" on the arguments to
+   the ocaml compiler, we discovered the root cause of the issue, and
+   reported the bug upstream where it has now been fixed.
+
+   Some additional work should be done on getting code coverage with
+   QuickChick, but this initial rough implementation was good enough
+   for us to get the measurements we needed. But, for future reference
+   here is a list of things we would like to improve in the future:
+
+   - QuickChick extracts a lot of Coq code into one file to run tests.
+     + This makes code coverage results less useful because you have a
+       lot of extra code that you wouldn't run in your test cases. For
+       instance, all of QuickChick gets stuffed into this file.
+     + All of your Coq code is in one file, so it's hard to where
+       things came from, and how much of each of your Coq modules is
+       actually covered by tests.
+   - Every single test in QuickChick runs in a separate ml file, all
+     with the extra extracted code.
+     + You don't get total coverage information, each file is specific
+       to each test case.
+     + Hard to tell which file corresponds to which test, we fed
+       through the test case string and put it into the file name to
+       make this easier, but it's still not ideal.
+
+   But again, we got this to the state where it was useful for making
+   measurements for comparing QuickChick and FuzzChick.
+
+** QuickChick vs FuzzChick
+
+   Unfortunately our measurements seem to suggest that QuickChick is
+   actually getting better test coverage than FuzzChick is. There
+   could be many reasons for this, maybe FuzzChick is just slower, AFL
+   needs more time to warm up, or possibly a myriad of other
+   reasons... The prevailing theory right now, however, is that the
+   code extracted from Coq is not as suitable for fuzzing.
+
+   For instance we tested this function:
+
+   #+begin_src coq
+     Extract Constant unlikely_branch =>
+     " fun i ->
+       if (0 < i)
+       then if (i mod 100 == 0)
+            then if (i mod 1000 == 0)
+                 then if (i mod 10000 == 0)
+                      then if (i mod 100000 == 0)
+                           then if (i mod 1000000 == 0)
+                                then if (i < 1000001)
+                                     then 42
+                                     else 0
+                                else 0
+                           else 0
+                      else 0
+                 else 0
+            else 0
+       else 0
+     ".
+
+
+     Definition always_zero := forAll (choose (0%Z, 9999999%Z)) (fun n => unlikely_branch n =? 0).
+   #+end_src
+
+   In both the C and ocaml equivalents of this AFL was able to find
+   the bug almost instantly. FuzzChick, however, was not able to find
+   the bug, even when left to run for a full hour.
+
+   This suggests to us that for whatever reason AFL is not able to
+   utilize the coverage information for these branches to generate
+   better test cases. Perhaps the extra indirection that FuzzChick
+   introduces as it takes AFL's input and converts it into
+   constructors for inductive data types is too much for AFL to
+   follow, or perhaps the test case just occurs too far into the
+   execution of the program for AFL to discover it quickly.
+
+* FuzzChick and Apache
+
+* Other Stuff we Tried
+
+** Honggfuzz
+
+   Initially we spent a significant amount of time trying to get more
+   traditional tools for testing web servers to work, in order to get
+   a point of comparison.
+
+   We spent lots of time getting Honggfuzz to run, and while we
+   eventually succeeded we were unable to use it as much of a
+   comparison. QuickChick is quite a different tool, as it searches
+   for functional correctness bugs, and not just crashes, and
+   additionally Honggfuzz needed to run for significant periods of
+   time to find any issues.
+
+   Despite this we have a good write-up of how to use Honggfuzz with
+   Apache, and we have created some helpful scripts and Dockerfiles
+   which will make it easier for other people to try this tool in the
+   future:
+
+   https://github.com/Quick700/Quick700/tree/master/honggfuzz
+
+** AFL
+
+   We also tried to use plain AFL with Apache, which had a similar
+   story to Honggfuzz. Unfortunately running a fuzzer to find bugs
+   just takes far too much time to reliably use to collect data for a
+   project.
