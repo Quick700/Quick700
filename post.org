@@ -152,7 +152,7 @@
   look into how does QuickChick and FuzzChick perform on the large
   real world project. We choose Apache server as our victim.
 
-  ** Setup
+** Setup
   We want both QuickChick and FuzzChick working with the Apache
   server, so we patch the Apache server following the blog post:
   "Fuzzing Apache httpd server with American Fuzzy Lop + persistent mode"
@@ -167,7 +167,7 @@
   https://github.com/Quick700/Quick700/tree/master/ocaml-fuzz
   
   
-  ** Experiment setup
+** Experiment setup
   Apache is written in C but we are trying to test the server in Coq.
   We decided to use Ocaml as an intermediate language so that Coq could
   extract the Ocaml function, and Ocaml can use Unix call to instantiate
@@ -180,8 +180,8 @@
   the Ocaml string is not. You need to pay attention on the string type
   when you are working with Extraction in Coq.
   
-  ** Primitive Experiment
-  *** Goal
+** Primitive Experiment
+*** Goal
   Because there is no clear documentation how to use the patched
   server, our primitive goal is to find out a string that make the
   server run successfully. Thus, we specified that if the exit code
@@ -190,18 +190,18 @@
   If we have one successful case that the server exit with 0, we can look
   at the string and guess what kind of argument should we provide.
   
-  *** Result
+*** Result
   Both QuickChick and FuzzChick failed to find out such a string which
   could boot the server.
   
-  **** QuickChick
+**** QuickChick
   It's pretty natural that the QuickChick failed to find the string, since
   QuickChick is treating the Apache server as a black box, and generating
   random string to pass into the server. Expecting QuickChick find out the
   correct string is similar to expecting a Monkey types out the complete work
   of Shakespear.
   
-  **** FuzzChick
+**** FuzzChick
   It also failed to figure out the string even we gave it more hint than we
   did in the QuickChick case. It also takes more time than we did in
   the QuickChick case to fuzz apache. For QuickChick, it take seconds to
@@ -219,18 +219,18 @@
   a blackbox to FuzzChick as well. To reproduce this result, use gdb to break
   at main method on the server/main.c in the apache directory.
   
-  ** Furthur Experiment
+** Furthur Experiment
   Using OCaml's unix call, we can do more things rather than just obtain
   the exit code of a program. We want to know more about the reason why
   did the program fail. Is it really the case that FuzzChick could go
   furthur inside the server than QuickChick does?
   
-  *** goal
+*** goal
   We want to pass the result of calling the server to QuickChick and
   FuzzChick, and the specification is expecting all of the error messages
   are the same.
   
-  *** Result
+*** Result
   We first tried to use unix call to redirect both stdout and stderr to a
   string and pass that string to Coq, but we found this is a non trivial
   task not to block the execution.
