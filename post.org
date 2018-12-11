@@ -146,8 +146,104 @@
    follow, or perhaps the test case just occurs too far into the
    execution of the program for AFL to discover it quickly.
 
-* FuzzChick and Apache
+* Fuzzing on Apache
+  Although we have compared the performance of QuickChick and
+  FuzzChick on the code snippets we mentioned above, we want to
+  look into how does QuickChick and FuzzChick perform on the large
+  real world project. We choose Apache server as our victim.
 
+  ** Setup
+  We want both QuickChick and FuzzChick working with the Apache
+  server, so we patch the Apache server following the blog post:
+  "Fuzzing Apache httpd server with American Fuzzy Lop + persistent mode"
+  so that FuzzChick will be able to initiate AFL.
+   
+  https://sensepost.com/blog/2017/fuzzing-apache-httpd-server-with-american-fuzzy-lop-%2B-persistent-mode/
+   
+  There are many versioning issues that we have went through. To
+  reproduce the fuzzing environment and results, you can follow the
+  README in the ocaml-fuzz directory.
+  
+  https://github.com/Quick700/Quick700/tree/master/ocaml-fuzz
+  
+  
+  ** Experiment setup
+  Apache is written in C but we are trying to test the server in Coq.
+  We decided to use Ocaml as an intermediate language so that Coq could
+  extract the Ocaml function, and Ocaml can use Unix call to instantiate
+  C functions. That is, the coq program will be compiled to a ocaml program
+  along with the Extracted ocaml function, and in that ocaml program, the
+  Unix call can interact with the C program.
+  
+  Some techical details: the OCaml string and the Coq
+  string are not the same. The Coq string in OCaml is a list of Char, while
+  the Ocaml string is not. You need to pay attention on the string type
+  when you are working with Extraction in Coq.
+  
+  ** Primitive Experiment
+  *** Goal
+  Because there is no clear documentation how to use the patched
+  server, our primitive goal is to find out a string that make the
+  server run successfully. Thus, we specified that if the exit code
+  of the apache server is non-zero, then it is expected, otherwise,
+  we want to capture the string which makes the server run successfully.
+  If we have one successful case that the server exit with 0, we can look
+  at the string and guess what kind of argument should we provide.
+  
+  *** Result
+  Both QuickChick and FuzzChick failed to find out such a string which
+  could boot the server.
+  
+  **** QuickChick
+  It's pretty natural that the QuickChick failed to find the string, since
+  QuickChick is treating the Apache server as a black box, and generating
+  random string to pass into the server. Expecting QuickChick find out the
+  correct string is similar to expecting a Monkey types out the complete work
+  of Shakespear.
+  
+  **** FuzzChick
+  It also failed to figure out the string even we gave it more hint than we
+  did in the QuickChick case. It also takes more time than we did in
+  the QuickChick case to fuzz apache. For QuickChick, it take seconds to
+  generate 10000 strings to pass into the apache server and get the feedback,
+  but it took around 1.2 seconds to generate 1 case and pass it to Apache for
+  the FuzzChick. Maybe FuzzChick is actually generating sensible case which
+  passed the syntax checks and get deeper into the server.
+  
+  Some interesting fact is, the FuzzChick also didn't get furthur into the
+  server other than the client side. The patched server is using pthread to
+  invoke the deeper methods using the string we passed in. However, after the
+  pthread is invoked, none of the AFL calls are furthur invoked. The advantage
+  that AFL could figure out whether the program is in a new state is lost
+  after the pthread method is invoked. The server behind the scene is still
+  a blackbox to FuzzChick as well. To reproduce this result, use gdb to break
+  at main method on the server/main.c in the apache directory.
+  
+  ** Furthur Experiment
+  Using OCaml's unix call, we can do more things rather than just obtain
+  the exit code of a program. We want to know more about the reason why
+  did the program fail. Is it really the case that FuzzChick could go
+  furthur inside the server than QuickChick does?
+  
+  *** goal
+  We want to pass the result of calling the server to QuickChick and
+  FuzzChick, and the specification is expecting all of the error messages
+  are the same.
+  
+  *** Result
+  We first tried to use unix call to redirect both stdout and stderr to a
+  string and pass that string to Coq, but we found this is a non trivial
+  task not to block the execution.
+  
+  https://stackoverflow.com/questions/47294583/how-to-capture-subprocess-output-on-both-stderr-and-stdout-in-ocaml?rq=1
+  
+  Thus, we try to redirect the stdout to the Coq instead. This function
+  requires OCaml Stdio library. Although we can use Ocamlfind and OCamlbuild
+  in the original function, we are not able to find out how to use
+  Stdio library in Coq when we extract the function.
+  
+  This experiment is aborted due to the lack of support of OCaml in Coq.
+  
 * Other Stuff we Tried
 
 ** Honggfuzz
