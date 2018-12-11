@@ -26,9 +26,7 @@ docker run --privileged -it --name ocmal-fuzz-fun ocmal-fuzz
 
 Trouble shoot: if you the docker build process fails with exit code 137, it means the your computer don't have enough memory. Run:
 ```
-mv Dockerfile Dockerfile_old
-mv Dockerfile_137 Dockerfile
-docker build .
+docker build --file `pwd`/Dockerfile-137 .
 docker run --privileged -it --name ocmal-fuzz-fun ocmal-fuzz
 ./setup.sh
 make -C src
