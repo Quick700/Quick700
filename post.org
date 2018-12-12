@@ -246,6 +246,28 @@
   
 * Other Stuff we Tried
 
+** Fuzzing DeepWeb
+
+   [[https://deepspec.org/entry/Project/DeepSpec+Web+Server][DeepWeb]] is aiming
+   to build a web server verified end-to-end, "from Internet RFCs all the way to
+   transistors". We have written a Coq specification for a subset of HTTP, and
+   tested it against real-world web servers. By switching from QuickChick
+   (driven by pseudo-random number generators) to FuzzChick (with randomness
+   provided by AFL), the tester could still capture the bug we inserted to
+   Apache (technically, dropping the last byte from PUT request).
+
+   QuickChick could capture the bug in 8.0±1.1s with 95% confidence, whereas
+   FuzzChick might take hours to produce a counterexample. Such inefficiency is
+   within our expectation, since the tester is interacting with the server via
+   network interface, which is opaque to AFL. Instead of searching for more
+   execution paths in the server, AFL could only expand its coverage in the
+   tester i.e. the test case generator and checker. However, covering more paths
+   in the generator does not necessarily reveal bugs faster, because the
+   generator was such carefully tuned that requests leading to errors more
+   easily are generated more frequently. Such tuning only works when the seeds
+   are uniformly distributed, which is not provided by dynamic symbolic
+   execution.
+
 ** Honggfuzz
 
    Initially we spent a significant amount of time trying to get more
