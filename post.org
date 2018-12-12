@@ -306,3 +306,16 @@
    story to Honggfuzz. Unfortunately running a fuzzer to find bugs
    just takes far too much time to reliably use to collect data for a
    project.
+
+* Related and Future Work
+
+  Dr. Lampropoulos, developer of FuzzChick, is comparing it to QuickChick on
+  testing information flow control (IFC):
+  https://github.com/QuickChick/QuickChick/tree/FuzzChick/examples/fuzz-ifc
+  The work is still in progress. Experiments show that fuzzing is an order of
+  magnitude slower than random testing, and the performance is bottlenecked by
+  disk access. Whether such overhead is worth it or not is under study.
+
+  The integration experiment with AFL poses several directions to improve
+  QuickChick, including: better support for external programs, exporting path
+  coverage information, cleaner interface between generator and checker etc.
