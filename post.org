@@ -16,6 +16,10 @@
   and then running the output of this sort function through a function
   that checks whether or not the list is sorted.
 
+  #+CAPTION: QuickChick workflow
+  #+NAME: fig:quickchick
+  [[./img/quickchick.jpg]]
+
   This is a pretty simple idea, but it works incredibly well in
   practice. Furthermore, QuickChick has many nice features where it
   can automatically derive random generators for values of different
@@ -50,6 +54,10 @@
    AFL. The hope of this is that AFL will be able to pick the "random
    stream" in order to construct values that explore new paths in the
    program.
+
+   #+CAPTION: FuzzChick workflow
+   #+NAME: fig:fuzzchick
+   [[./img/fuzzchick.jpg]]
 
 * Evaluating FuzzChick
 
@@ -267,6 +275,10 @@
    easily are generated more frequently. Such tuning only works when the seeds
    are uniformly distributed, which is not provided by dynamic symbolic
    execution.
+
+   #+CAPTION: Fuzzing DeepWeb
+   #+NAME: fig:fuzzweb
+   [[./img/fuzzweb.jpg]]
 
 ** Honggfuzz
 
