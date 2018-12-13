@@ -1,3 +1,13 @@
+#+LATEX_HEADER: \usepackage{amsmath} \setlength{\parindent}{0pt} \setlength{\parskip}{2ex} \usepackage[top=1in, bottom=1.5in, left=1in, right=1in]{geometry} \usepackage{tikz} \usetikzlibrary{arrows} \usepackage{tkz-graph}
+#+latex_header: \usepackage[citestyle=authoryear-icomp,bibstyle=authoryear, hyperref=true,backref=true,maxcitenames=3,url=true,backend=biber,natbib=true] {biblatex}
+#+latex_header: \addbibresource{presentation/citations.bib}
+# Local Variables:
+# org-ref-default-bibliography: citations.bib
+# End:
+
+# bibliography:citations.bib
+# bibliographystyle:acm-format
+
 * Introduction
 
   FuzzChick is a new project which aims to improve QuickChick through
@@ -6,7 +16,7 @@
 
 * What is QuickChick?
 
-  To begin with it's worth recalling what QuickChick is!
+  To begin with it's worth recalling what QuickChick is! cite:lampropoulosgenerating
 
   QuickChick is a property based testing framework in Coq. The high
   level overview of how QuickChick works is that it generates values
@@ -46,8 +56,8 @@
    order to generate test cases which achieve better code coverage and
    are more likely to find bugs without manually tweaking a generator.
 
-   To achieve this Dr. Lampropoulos modified QuickChick to use an
-   input stream generated from AFL as the source of
+   To achieve this Dr. Lampropoulos modified QuickChick cite:fuzzchick
+   to use an input stream generated from AFL as the source of
    randomness. Instead of using a random number generator to directly
    pick which constructor to choose for a data type when generating it
    at each point, the "randomness" in QuickChick now comes from
@@ -164,13 +174,11 @@
   We want both QuickChick and FuzzChick working with the Apache
   server, so we patch the Apache server following the blog post:
   "Fuzzing Apache httpd server with American Fuzzy Lop + persistent mode"
-  so that FuzzChick will be able to initiate AFL.
-   
-  https://sensepost.com/blog/2017/fuzzing-apache-httpd-server-with-american-fuzzy-lop-%2B-persistent-mode/
+  so that FuzzChick will be able to initiate AFL cite:fuzzingapache.
    
   There are many versioning issues that we have went through. To
   reproduce the fuzzing environment and results, you can follow the
-  README in the ocaml-fuzz directory.
+  README in the ocaml-fuzz directory cite:quick700.
   
   https://github.com/Quick700/Quick700/tree/master/ocaml-fuzz
   
@@ -241,9 +249,7 @@
 *** Result
   We first tried to use unix call to redirect both stdout and stderr to a
   string and pass that string to Coq, but we found this is a non trivial
-  task not to block the execution.
-  
-  https://stackoverflow.com/questions/47294583/how-to-capture-subprocess-output-on-both-stderr-and-stdout-in-ocaml?rq=1
+  task not to block the execution cite:subprocess.
   
   Thus, we try to redirect the stdout to the Coq instead. This function
   requires OCaml Stdio library. Although we can use Ocamlfind and OCamlbuild
@@ -294,7 +300,7 @@
    time to find any issues.
 
    Despite this we have a good write-up of how to use Honggfuzz with
-   Apache, and we have created some helpful scripts and Dockerfiles
+   Apache cite:quick700, and we have created some helpful scripts and Dockerfiles
    which will make it easier for other people to try this tool in the
    future:
 
@@ -309,9 +315,9 @@
 
 * Related and Future Work
 
-  Dr. Lampropoulos, developer of FuzzChick, is comparing it to QuickChick on
-  testing information flow control (IFC):
-  https://github.com/QuickChick/QuickChick/tree/FuzzChick/examples/fuzz-ifc
+  Dr. Lampropoulos, developer of FuzzChick, [[https://github.com/QuickChick/QuickChick/tree/FuzzChick/examples/fuzz-ifc][is comparing it to
+  QuickChick on testing information flow control (IFC)]].
+  
   The work is still in progress. Experiments show that fuzzing is an order of
   magnitude slower than random testing, and the performance is bottlenecked by
   disk access. Whether such overhead is worth it or not is under study.
@@ -319,3 +325,8 @@
   The integration experiment with AFL poses several directions to improve
   QuickChick, including: better support for external programs, exporting path
   coverage information, cleaner interface between generator and checker etc.
+
+* References
+
+  \nocite{*}
+  \printbibliography
