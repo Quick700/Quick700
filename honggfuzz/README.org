@@ -1,5 +1,23 @@
 * Honggfuzz
 
+** Use Docker
+
+   #+BEGIN_SRC sh :shebang "#!/bin/sh"
+     docker run -it --privileged ysli/fuzz-apache:hong
+   #+END_SRC
+
+   Once you launched the container, test with:
+
+   #+BEGIN_SRC sh
+     ./fuzz-h1.sh
+   #+END_SRC
+
+   or
+
+   #+BEGIN_SRC sh
+     ./fuzz-h2.sh
+   #+END_SRC
+
 ** Git submodule
 
    This directory contains a few git submodules for Apache, it should
